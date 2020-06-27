@@ -1,0 +1,73 @@
+phase2
+i7 - 0x400 > 0x3fc00 (unsigned): i7>261120+1024=262144
+rbp = &i6
+
+eax = 5 + i7  == i6
+ebx = 4
+rbp = &i5
+eax = 4 + i6 == i5
+
+ebx=0
+rbp = &i1
+eax = 0 + i2 == i1
+
+i7=262145, i6=262150, i5=262154, i4=262157, i3=262159, i2=262160=i1
+
+
+phase3
+0x4026ea: "%d %d %d %d" -> i1=rsp+c, i2=rsp+8, i3=rsp+4, i4=rsp
+eax = i1 - 0x69 <= 0x8 (unsigned)
+i2 <= 0x1bc (signed)
+i3 == 0x226
+i4 상관없음
+
+i1 = 113, i2=0, i3=550 i4=0
+
+phase4
+0x4024e0: [13, 9, 14, 8, 12, 11, 8, 3, 10, 7, 3, 1, 9, 15, 6] 길이=15
+rbx = address of c1
+rax = address of c1
+rdi = address of c7 + 1
+ecx = 0
+
+edx = c1 & 1111
+ecx += arr[edx]
+rax = address of c2
+
+즉, 7개 원소 더해서 0x3c = 60
+3333334 (8 6개 + 12 1개)
+
+
+phase5
+*rsp = 0
+i1:rsp+4, i2:rsp+8, i3:rsp+c 에 위치
+i3-4<=0xc (unsigned) 여야 하므로 4<=i3<=16
+
+ebx = func5(rdi=rsp, esi=8, edx=i3)
+eax = func5(rdi=rsp, esi=8, edx=i3)
+i2 == eax+ebx 여야함.
+
+func5:
+*rdi += 1
+esi&esi 로 jle: esi==0이거나 esi<0(같은 esi끼리 하면 OF는 무조건0이고, SF가 set되어야)
+즉, esi<=0 -> return 0
+
+esi == 1 -> return edx
+
+eax = func5(rdi=rdi, esi=esi-1, edx=edx)
+r13 = eax + edx
+eax = func5(rdi=rdi, esi=esi-2, edx=edx)
+return eax+r13
+
+esi 값에 따른 func5값:
+0: 0
+1: edx
+2: 2edx
+3: f(2)+edx+f(1) = 4edx
+4: f(3)+edx+f(2) = 7edx
+5: 12edx
+6: 20edx
+7: 33edx
+8: 54edx
+
+따라서 i3=5로 두면, i2=54*5 + 54*5 = 540, i1: 상관없음

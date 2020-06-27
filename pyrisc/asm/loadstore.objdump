@@ -1,0 +1,14 @@
+
+loadstore:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00000f93          	li	t6,0
+80000004:	001f8f93          	addi	t6,t6,1
+80000008:	002f8f93          	addi	t6,t6,2
+8000000c:	003f8f93          	addi	t6,t6,3
+80000010:	004f8f93          	addi	t6,t6,4
+80000014:	005f8f93          	addi	t6,t6,5
+80000018:	00000073          	ecall
